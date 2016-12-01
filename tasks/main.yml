@@ -54,7 +54,7 @@
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Install specified packages  
+- name: Install specified packages
   include: install.yml
 
 - block:
@@ -97,7 +97,7 @@
     - /var/log/consul
     - /var/run/consul
     - /etc/consul.d
-    - /etc/consul.d/bootstrap   
+    - /etc/consul.d/bootstrap
     - /etc/consul.d/client
     - /etc/consul.d/server
 
@@ -144,7 +144,7 @@
     service: name=consul state=started enabled=yes
 
   - name: Consul up?
-    wait_for: delay=5 path=/var/run/consul/consul.pid state=present
+    wait_for: delay=20 path=/var/run/consul/consul.pid state=present
 
   - block:
       - name: Reconfigure bootstrap node (systemd)
@@ -173,5 +173,5 @@
 
   - include: ../tasks/client.yml
     when: consul_node_role == "client" and ansible_os_family == "Debian"
-  
+
   when: not bootstrap_marker.stat.exists
